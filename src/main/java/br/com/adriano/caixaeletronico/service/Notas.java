@@ -16,7 +16,7 @@ public class Notas {
 
     public void retirada(Integer quantidade) throws Exception {
         if(quantidadeDisponivel >= quantidade){
-            quantidadeDisponivel=-quantidade;
+            quantidadeDisponivel=quantidadeDisponivel-quantidade;
         }else {
             throw new Exception("Erro não previsto, tente outra vez!");
         }
@@ -30,6 +30,8 @@ public class Notas {
         return quantidadeDisponivel;
     }
 
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -41,5 +43,9 @@ public class Notas {
     @Override
     public int hashCode() {
         return Objects.hash(nota);
+    }
+
+    public TipoNotas getNota() {
+        return nota;
     }
 }

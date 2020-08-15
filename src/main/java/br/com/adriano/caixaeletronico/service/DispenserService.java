@@ -13,13 +13,18 @@ public class DispenserService {
 
     public DispenserService() {
         notasDisponiveis = new ArrayList<>();
+        notasDisponiveis.add(new Notas(5, TipoNotas.NOTAS_10));
+        notasDisponiveis.add(new Notas(7, TipoNotas.NOTAS_50));
+        notasDisponiveis.add(new Notas(5, TipoNotas.NOTAS_100));
+        notasDisponiveis.add(new Notas(2, TipoNotas.NOTAS_20));
     }
 
     public void incluirNota(Notas notas){
         if(!notasDisponiveis.contains(notas)) {
             notasDisponiveis.add(notas);
         }else{
-            notasDisponiveis.get(notasDisponiveis.indexOf(notas)).setQuantidadeDisponivel(notas.getQuantidadeDisponivel());
+            notasDisponiveis.get(notasDisponiveis.indexOf(notas))
+                    .setQuantidadeDisponivel(notas.getQuantidadeDisponivel());
         }
     }
 
@@ -27,8 +32,8 @@ public class DispenserService {
 
         return notasDisponiveis
                 .stream()
-                .filter(notas -> notas.equals(tipo))
-                .findFirst()
+                .filter(notas -> notas.getNota().equals(tipo))
+                .findAny()
                 .get();
     }
 }

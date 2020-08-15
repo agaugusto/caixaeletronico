@@ -9,70 +9,74 @@ import java.util.List;
 
 @Service
 public class NotasService {
-    
+
     private final DispenserService dispenser;
 
     public NotasService(DispenserService dispenser) {
         this.dispenser = dispenser;
     }
 
-
     public List<NotasDTO> distribuicaoNotas(Integer valor) throws Exception {
         List<NotasDTO> listaCedulas = new ArrayList<>();
-        NotasDTO cedulaDTO = null;
         Integer valorRestante = valor.intValue();
-        Integer quantidade = 0;
+        NotasDTO calc = new NotasDTO();
+        calc = calculaQuantidadeDeNotas(TipoNotas.NOTAS_100, valorRestante);
+        if(calc != null){
+            listaCedulas.add(calc);
+            valorRestante = valorRestante - (TipoNotas.NOTAS_100.getValue() * calc.getQuantidade());
+        }
 
-            if (valorRestante >= 100) {
-                quantidade = valorRestante / 100;
-                Integer quantidadeDisponivel = dispenser.retornaNota(TipoNotas.NOTAS_100).getQuantidadeDisponivel();
-                if(quantidade > quantidadeDisponivel){
-                    quantidade = quantidadeDisponivel;
-                }
-                if (quantidade > 0) {
-                    valorRestante = valorRestante - (100 * quantidade);
-                    listaCedulas.add(buildNotaDTO(quantidade, TipoNotas.NOTAS_100));
-                }
-            }
-            if (valorRestante >= 50) {
-                quantidade = valorRestante / 50;
-                Integer quantidadeDisponivel = dispenser.retornaNota(TipoNotas.NOTAS_50).getQuantidadeDisponivel();
-                if(quantidade > quantidadeDisponivel){
-                    quantidade = quantidadeDisponivel;
-                }
-                if (quantidade > 0) {
-                    valorRestante = valorRestante - (50 * quantidade);
-                    listaCedulas.add(buildNotaDTO(quantidade, TipoNotas.NOTAS_50));
-                }
-            }
-            if (valorRestante >= 20) {
-                quantidade = valorRestante / 20;
-                Integer quantidadeDisponivel = dispenser.retornaNota(TipoNotas.NOTAS_20).getQuantidadeDisponivel();
-                if(quantidade > quantidadeDisponivel){
-                    quantidade = quantidadeDisponivel;
-                }
-                if (quantidade > 0) {
-                    valorRestante = valorRestante - (20 * quantidade);
-                    listaCedulas.add(buildNotaDTO(quantidade, TipoNotas.NOTAS_20));
-                }
-            }
-            if (valorRestante >= 10) {
-                quantidade = valorRestante / 10;
-                Integer quantidadeDisponivel = dispenser.retornaNota(TipoNotas.NOTAS_10).getQuantidadeDisponivel();
-                if(quantidade > quantidadeDisponivel){
-                    quantidade = quantidadeDisponivel;
-                }
-                if (quantidade > 0) {
-                    valorRestante = valorRestante - (10 * quantidade);
-                    listaCedulas.add(buildNotaDTO(quantidade, TipoNotas.NOTAS_10));
-                }
-            }
-            if(valorRestante >= 10){
-                throw new Exception("Valor solicitado indisponível!");
-            }else if(valorRestante != 0){
-                throw new Exception("Não é permitido valor menor que 10 reais!");
-            }
+        calc = calculaQuantidadeDeNotas(TipoNotas.NOTAS_50, valorRestante);
+        if(calc != null){
+            listaCedulas.add(calc);
+            valorRestante = valorRestante - (TipoNotas.NOTAS_50.getValue() * calc.getQuantidade());
+        }
+
+        calc = calculaQuantidadeDeNotas(TipoNotas.NOTAS_20, valorRestante);
+        if(calc != null){
+            listaCedulas.add(calc);
+            valorRestante = valorRestante - (TipoNotas.NOTAS_20.getValue() * calc.getQuantidade());
+        }
+
+        calc = calculaQuantidadeDeNotas(TipoNotas.NOTAS_10, valorRestante);
+        if(calc != null){
+            listaCedulas.add(calc);
+            valorRestante = valorRestante - (TipoNotas.NOTAS_10.getValue() * calc.getQuantidade());
+        }
+
+        if(valorRestante >= 10){
+            throw new Exception("Valor solicitado indisponível!");
+        }else if(valorRestante != 0){
+            throw new Exception("Não é permitido valor menor que 10 reais!");
+        }
+        retiradaDispenser(listaCedulas);
         return listaCedulas;
+    }
+
+    private NotasDTO calculaQuantidadeDeNotas (TipoNotas tipoNotas, Integer valorRestante) {
+        if (valorRestante >= tipoNotas.getValue()) {
+            Integer quantidade = valorRestante / tipoNotas.getValue();
+            Integer quantidadeDisponivel = dispenser.retornaNota(tipoNotas).getQuantidadeDisponivel();
+            if (quantidade > quantidadeDisponivel) {
+                quantidade = quantidadeDisponivel;
+            }
+            if (quantidade > 0) {
+                return buildNotaDTO(quantidade, tipoNotas);
+            }
+        }
+        return null;
+    }
+
+    private void retiradaDispenser(List<NotasDTO> notasDTOList){
+        notasDTOList
+                .stream()
+                .forEach(notasDTO -> {
+                    try {
+                        dispenser.retornaNota(notasDTO.getNota()).retirada(notasDTO.getQuantidade());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
     }
 
     private NotasDTO buildNotaDTO(Integer quantidade, TipoNotas tipo) {
