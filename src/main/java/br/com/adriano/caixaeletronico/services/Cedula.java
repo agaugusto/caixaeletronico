@@ -1,5 +1,6 @@
 package br.com.adriano.caixaeletronico.services;
 
+import br.com.adriano.caixaeletronico.error.NumeroDeNotasIndisponivelException;
 import br.com.adriano.caixaeletronico.tipo.TipoNota;
 
 import java.util.Objects;
@@ -13,11 +14,11 @@ public class Cedula {
         this.nota = nota;
     }
 
-    public void retirarEstoque(Integer quantidade) throws Exception {
+    public void retirarEstoque(Integer quantidade) throws NumeroDeNotasIndisponivelException {
         if(quantidadeDisponivel >= quantidade){
             quantidadeDisponivel=quantidadeDisponivel-quantidade;
         }else {
-            throw new Exception("Erro não previsto, tente outra vez!");
+            throw new NumeroDeNotasIndisponivelException("Número de notas indisponível!");
         }
     }
 

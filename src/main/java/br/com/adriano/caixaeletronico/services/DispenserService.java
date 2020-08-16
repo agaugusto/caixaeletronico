@@ -1,40 +1,43 @@
 package br.com.adriano.caixaeletronico.services;
 
+import br.com.adriano.caixaeletronico.error.CedulaIndisponivelException;
+import br.com.adriano.caixaeletronico.error.NumeroDeNotasIndisponivelException;
 import br.com.adriano.caixaeletronico.tipo.TipoNota;
 import br.com.adriano.caixaeletronico.repository.DispenserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class DispenserService {
 
-    private final DispenserRepository dispenserRepository;
     private List<Cedula> notasDisponiveis;
 
     public DispenserService(DispenserRepository dispenserRepository) {
-        this.dispenserRepository = dispenserRepository;
-        notasDisponiveis = dispenserRepository.buscaNotasDispenser();
+        notasDisponiveis = dispenserRepository.buscarNotasDispenser();
     }
 
-    public Integer retornaQuantidadeDeNotasDoTipo(TipoNota tipoNota){
+    public Optional<Cedula> buscarCedulaDoTipo(TipoNota tipoNota){
         return notasDisponiveis
                 .stream()
-                .filter(notas -> notas.getNota().equals(tipoNota))
-                .findFirst()
-                .get().getQuantidadeDisponivel();
-    }
-
-    public void atualizarQuantidadeNotas(TipoNota tipoNota, Integer quantidade) throws Exception {
-        notasDisponiveis
-                .stream()
                 .filter(cedula -> cedula.getNota().equals(tipoNota))
-                .findFirst()
-                .get().retirarEstoque(quantidade);
+                .findFirst();
     }
 
-    public List<Cedula> listarNotasEmEstoque(){
+    public void atualizarRetiraDeCedulas(TipoNota tipoNota, Integer quantidade) throws CedulaIndisponivelException, NumeroDeNotasIndisponivelException {
+        Optional<Cedula> cedulaOptional = buscarCedulaDoTipo(tipoNota);
+
+        if(cedulaOptional.isPresent()){
+            cedulaOptional.get().retirarEstoque(quantidade);
+        }else {
+            throw new CedulaIndisponivelException("Cedula não encontrada!");
+        }
+
+    }
+
+    public List<Cedula> buscarNotasEmEstoque(){
         return notasDisponiveis
                 .stream()
                 .filter(cedula -> cedula.getQuantidadeDisponivel() > 0)

@@ -1,4 +1,4 @@
-package br.com.adriano.caixaeletronico.exception;
+package br.com.adriano.caixaeletronico.error;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

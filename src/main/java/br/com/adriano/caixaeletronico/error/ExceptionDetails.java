@@ -3,14 +3,14 @@ package br.com.adriano.caixaeletronico.error;
 import lombok.Getter;
 
 @Getter
-public class ValorIndisponivelDetails {
+public class ExceptionDetails {
     private String title;
     private int status;
     private String detail;
     private Long timeStamp;
     private String developorMessage;
 
-    private ValorIndisponivelDetails(){
+    private ExceptionDetails(){
     }
 
 
@@ -53,14 +53,14 @@ public class ValorIndisponivelDetails {
             return this;
         }
 
-        public ValorIndisponivelDetails build() {
-            ValorIndisponivelDetails valorIndisponivelDetails = new ValorIndisponivelDetails();
-            valorIndisponivelDetails.status = this.status;
-            valorIndisponivelDetails.title = this.title;
-            valorIndisponivelDetails.detail = this.detail;
-            valorIndisponivelDetails.timeStamp = this.timeStamp;
-            valorIndisponivelDetails.developorMessage = this.developorMessage;
-            return valorIndisponivelDetails;
+        public ExceptionDetails build() {
+            ExceptionDetails exceptionDetails = new ExceptionDetails();
+            exceptionDetails.status = this.status;
+            exceptionDetails.title = this.title;
+            exceptionDetails.detail = this.detail;
+            exceptionDetails.timeStamp = this.timeStamp;
+            exceptionDetails.developorMessage = this.developorMessage;
+            return exceptionDetails;
         }
     }
 }

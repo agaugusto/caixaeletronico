@@ -1,13 +1,14 @@
 package br.com.adriano.caixaeletronico.services;
 
-import br.com.adriano.caixaeletronico.dto.NotaDTO;
-import br.com.adriano.caixaeletronico.exception.NumeroDeNotasIndisponivelException;
-import br.com.adriano.caixaeletronico.exception.ValorIndisponivelException;
+import br.com.adriano.caixaeletronico.dto.CedulaDTO;
+import br.com.adriano.caixaeletronico.error.NumeroDeNotasIndisponivelException;
+import br.com.adriano.caixaeletronico.error.ValorIndisponivelException;
 import br.com.adriano.caixaeletronico.tipo.TipoNota;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SaqueService {
@@ -18,16 +19,16 @@ public class SaqueService {
         this.dispenser = dispenser;
     }
 
-    public List<NotaDTO> distribuicaoNotas(Integer valor) throws Exception {
-        List<NotaDTO> listaCedulas = new ArrayList<>();
-        Integer valorRestante = valor.intValue();
-        NotaDTO notaDTO = new NotaDTO();
-        List<Cedula> cedulasList = dispenser.listarNotasEmEstoque();
+    public List<CedulaDTO> buscarDistribuicaoDeCedulas(Integer valor) throws NumeroDeNotasIndisponivelException, ValorIndisponivelException {
+        List<CedulaDTO> listaCedulas = new ArrayList<>();
+        Integer valorRestante = valor;
+        CedulaDTO cedulaDTO;
+        List<Cedula> cedulasList = dispenser.buscarNotasEmEstoque();
         for(Cedula cedula : cedulasList){
-            notaDTO = calculaQuantidadeDeNotas(cedula.getNota(), valorRestante);
-            if (notaDTO != null) {
-                listaCedulas.add(notaDTO);
-                valorRestante = valorRestante - (cedula.getNota().getValue() * notaDTO.getQuantidade());
+            cedulaDTO = buscarQuantidadeDeCedulasDoTipo(cedula.getNota(), valorRestante);
+            if (cedulaDTO != null) {
+                listaCedulas.add(cedulaDTO);
+                valorRestante = valorRestante - (cedula.getNota().getValue() * cedulaDTO.getQuantidade());
             }
         }
         if(valorRestante >= 10){
@@ -39,36 +40,38 @@ public class SaqueService {
         return listaCedulas;
     }
 
-    private NotaDTO calculaQuantidadeDeNotas (TipoNota tipoNota, Integer valorRestante) {
+    private CedulaDTO buscarQuantidadeDeCedulasDoTipo(TipoNota tipoNota, Integer valorRestante) {
         if (valorRestante >= tipoNota.getValue()) {
             Integer quantidade = valorRestante / tipoNota.getValue();
-            Integer quantidadeDisponivel = dispenser.retornaQuantidadeDeNotasDoTipo(tipoNota);
-            if (quantidade > quantidadeDisponivel) {
-                quantidade = quantidadeDisponivel;
-            }
-            if (quantidade > 0) {
-                return buildNotaDTO(quantidade, tipoNota);
+            Optional<Cedula> cedula = dispenser.buscarCedulaDoTipo(tipoNota);
+            if(cedula.isPresent()) {
+                if (quantidade > cedula.get().getQuantidadeDisponivel()) {
+                    quantidade = cedula.get().getQuantidadeDisponivel();
+                }
+                if (quantidade > 0) {
+                    return buildCedulaDTO(quantidade, tipoNota);
+                }
             }
         }
         return null;
     }
 
-    private void atualizarDispenser(List<NotaDTO> notaDTOList){
-        notaDTOList
+    private void atualizarDispenser(List<CedulaDTO> cedulaDTOList){
+        cedulaDTOList
                 .stream()
-                .forEach(notaDTO -> {
+                .forEach(cedulaDTO -> {
                     try {
-                        dispenser.atualizarQuantidadeNotas(notaDTO.getTipoNota(), notaDTO.getQuantidade());
+                        dispenser.atualizarRetiraDeCedulas(cedulaDTO.getTipoNota(), cedulaDTO.getQuantidade());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 });
     }
 
-    private NotaDTO buildNotaDTO(Integer quantidade, TipoNota tipo) {
-        NotaDTO notaDTO = new NotaDTO();
-        notaDTO.setQuantidade(quantidade);
-        notaDTO.setTipoNota(tipo);
-        return notaDTO;
+    private CedulaDTO buildCedulaDTO(Integer quantidade, TipoNota tipo) {
+        CedulaDTO cedulaDTO = new CedulaDTO();
+        cedulaDTO.setQuantidade(quantidade);
+        cedulaDTO.setTipoNota(tipo);
+        return cedulaDTO;
     }
 }

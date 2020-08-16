@@ -10,7 +10,7 @@ import lombok.*;
 @Setter
 @EqualsAndHashCode
 @ToString
-public class NotaDTO {
+public class CedulaDTO {
     private TipoNota tipoNota;
     private Integer quantidade;
 }

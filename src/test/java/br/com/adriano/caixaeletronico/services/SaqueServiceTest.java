@@ -2,10 +2,9 @@ package br.com.adriano.caixaeletronico.services;
 
 
 import br.com.adriano.caixaeletronico.tipo.TipoNota;
-import br.com.adriano.caixaeletronico.dto.NotaDTO;
+import br.com.adriano.caixaeletronico.dto.CedulaDTO;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,29 +26,22 @@ public class SaqueServiceTest {
 
     @Test
     public void deveRetornarUmaNotaDeDezUmaDeVinteUmaDeCinquentaEDuasDeCem(){
-        List<NotaDTO> notaDTO = new ArrayList<>();
-        notaDTO.add(buildNotaDTO(2, TipoNota.NOTAS_100));
-        notaDTO.add(buildNotaDTO(1, TipoNota.NOTAS_50));
-        notaDTO.add(buildNotaDTO(1, TipoNota.NOTAS_20));
-        notaDTO.add(buildNotaDTO(1, TipoNota.NOTAS_10));
-        when(dispenserService.listarNotasEmEstoque())
+        List<CedulaDTO> cedulaDTO = new ArrayList<>();
+        cedulaDTO.add(buildNotaDTO(2, TipoNota.NOTAS_100));
+        cedulaDTO.add(buildNotaDTO(1, TipoNota.NOTAS_50));
+        cedulaDTO.add(buildNotaDTO(1, TipoNota.NOTAS_20));
+        cedulaDTO.add(buildNotaDTO(1, TipoNota.NOTAS_10));
+        when(dispenserService.buscarNotasEmEstoque())
                 .thenReturn(buildCedulasDispenser());
 
-        when(dispenserService.retornaQuantidadeDeNotasDoTipo(TipoNota.NOTAS_100))
-                .thenReturn(2);
-
-        when(dispenserService.retornaQuantidadeDeNotasDoTipo(TipoNota.NOTAS_50))
-                .thenReturn(2);
-
-        when(dispenserService.retornaQuantidadeDeNotasDoTipo(TipoNota.NOTAS_20))
-                .thenReturn(2);
-
-        when(dispenserService.retornaQuantidadeDeNotasDoTipo(TipoNota.NOTAS_10))
-                .thenReturn(2);
+        mockCedula(TipoNota.NOTAS_100, 2);
+        mockCedula(TipoNota.NOTAS_50, 2);
+        mockCedula(TipoNota.NOTAS_20, 2);
+        mockCedula(TipoNota.NOTAS_10, 2);
 
         try {
-            List<NotaDTO> retorno = service.distribuicaoNotas(280);
-            assertArrayEquals(notaDTO.toArray(), retorno.toArray());
+            List<CedulaDTO> retorno = service.buscarDistribuicaoDeCedulas(280);
+            assertArrayEquals(cedulaDTO.toArray(), retorno.toArray());
         } catch (Exception e) {
             fail("Não deve falhar!");
         }
@@ -57,21 +49,18 @@ public class SaqueServiceTest {
 
     @Test
     public void deveRetornarUmaNotaDeDezEUmaDeCinquenta(){
-        List<NotaDTO> notaDTO = new ArrayList<>();
-        notaDTO.add(buildNotaDTO(1, TipoNota.NOTAS_100));
-        notaDTO.add(buildNotaDTO(1, TipoNota.NOTAS_10));
-        when(dispenserService.listarNotasEmEstoque())
+        List<CedulaDTO> cedulaDTO = new ArrayList<>();
+        cedulaDTO.add(buildNotaDTO(1, TipoNota.NOTAS_100));
+        cedulaDTO.add(buildNotaDTO(1, TipoNota.NOTAS_10));
+        when(dispenserService.buscarNotasEmEstoque())
                 .thenReturn(buildCedulasDispenser());
 
-        when(dispenserService.retornaQuantidadeDeNotasDoTipo(TipoNota.NOTAS_100))
-                .thenReturn(2);
-
-        when(dispenserService.retornaQuantidadeDeNotasDoTipo(TipoNota.NOTAS_10))
-                .thenReturn(2);
+        mockCedula(TipoNota.NOTAS_100, 2);
+        mockCedula(TipoNota.NOTAS_10, 2);
 
         try {
-            List<NotaDTO> retorno = service.distribuicaoNotas(110);
-            assertArrayEquals(notaDTO.toArray(), retorno.toArray());
+            List<CedulaDTO> retorno = service.buscarDistribuicaoDeCedulas(110);
+            assertArrayEquals(cedulaDTO.toArray(), retorno.toArray());
         } catch (Exception e) {
             fail("Não deve falhar!");
         }
@@ -79,21 +68,18 @@ public class SaqueServiceTest {
 
     @Test
     public void deveRetornarDuasDeVinteEUmaDeCinquenta(){
-        List<NotaDTO> notaDTO = new ArrayList<>();
-        notaDTO.add(buildNotaDTO(1, TipoNota.NOTAS_50));
-        notaDTO.add(buildNotaDTO(2, TipoNota.NOTAS_20));
-        when(dispenserService.listarNotasEmEstoque())
+        List<CedulaDTO> cedulaDTO = new ArrayList<>();
+        cedulaDTO.add(buildNotaDTO(1, TipoNota.NOTAS_50));
+        cedulaDTO.add(buildNotaDTO(2, TipoNota.NOTAS_20));
+        when(dispenserService.buscarNotasEmEstoque())
                 .thenReturn(buildCedulasDispenser());
 
-        when(dispenserService.retornaQuantidadeDeNotasDoTipo(TipoNota.NOTAS_50))
-        .thenReturn(2);
-
-        when(dispenserService.retornaQuantidadeDeNotasDoTipo(TipoNota.NOTAS_20))
-                .thenReturn(2);
+        mockCedula(TipoNota.NOTAS_50, 2);
+        mockCedula(TipoNota.NOTAS_20, 2);
 
         try {
-            List<NotaDTO> retorno = service.distribuicaoNotas(90);
-            assertArrayEquals(notaDTO.toArray(), retorno.toArray());
+            List<CedulaDTO> retorno = service.buscarDistribuicaoDeCedulas(90);
+            assertArrayEquals(cedulaDTO.toArray(), retorno.toArray());
         } catch (Exception e) {
             fail("Não deve falhar!");
         }
@@ -101,21 +87,18 @@ public class SaqueServiceTest {
 
     @Test
     public void deveRetornarUmaDeVinteEUmaDeDez(){
-        List<NotaDTO> notaDTO = new ArrayList<>();
-        notaDTO.add(buildNotaDTO(1, TipoNota.NOTAS_20));
-        notaDTO.add(buildNotaDTO(1, TipoNota.NOTAS_10));
-        when(dispenserService.listarNotasEmEstoque())
+        List<CedulaDTO> cedulaDTO = new ArrayList<>();
+        cedulaDTO.add(buildNotaDTO(1, TipoNota.NOTAS_20));
+        cedulaDTO.add(buildNotaDTO(1, TipoNota.NOTAS_10));
+        when(dispenserService.buscarNotasEmEstoque())
                 .thenReturn(buildCedulasDispenser());
 
-        when(dispenserService.retornaQuantidadeDeNotasDoTipo(TipoNota.NOTAS_20))
-                .thenReturn(2);
-
-        when(dispenserService.retornaQuantidadeDeNotasDoTipo(TipoNota.NOTAS_10))
-                .thenReturn(2);
+        mockCedula(TipoNota.NOTAS_20, 2);
+        mockCedula(TipoNota.NOTAS_10, 2);
 
         try {
-            List<NotaDTO> retorno = service.distribuicaoNotas(30);
-            assertArrayEquals(notaDTO.toArray(), retorno.toArray());
+            List<CedulaDTO> retorno = service.buscarDistribuicaoDeCedulas(30);
+            assertArrayEquals(cedulaDTO.toArray(), retorno.toArray());
         } catch (Exception e) {
             fail("Não deve falhar!");
         }
@@ -123,25 +106,20 @@ public class SaqueServiceTest {
 
     @Test
     public void deveRetornarUmaDeCinquentaUmaDeVinteEUmaDeDez(){
-        List<NotaDTO> notaDTO = new ArrayList<>();
-        notaDTO.add(buildNotaDTO(1, TipoNota.NOTAS_50));
-        notaDTO.add(buildNotaDTO(1, TipoNota.NOTAS_20));
-        notaDTO.add(buildNotaDTO(1, TipoNota.NOTAS_10));
-        when(dispenserService.listarNotasEmEstoque())
+        List<CedulaDTO> cedulaDTO = new ArrayList<>();
+        cedulaDTO.add(buildNotaDTO(1, TipoNota.NOTAS_50));
+        cedulaDTO.add(buildNotaDTO(1, TipoNota.NOTAS_20));
+        cedulaDTO.add(buildNotaDTO(1, TipoNota.NOTAS_10));
+        when(dispenserService.buscarNotasEmEstoque())
                 .thenReturn(buildCedulasDispenser());
 
-        when(dispenserService.retornaQuantidadeDeNotasDoTipo(TipoNota.NOTAS_50))
-                .thenReturn(2);
-
-        when(dispenserService.retornaQuantidadeDeNotasDoTipo(TipoNota.NOTAS_20))
-                .thenReturn(2);
-
-        when(dispenserService.retornaQuantidadeDeNotasDoTipo(TipoNota.NOTAS_10))
-                .thenReturn(2);
+        mockCedula(TipoNota.NOTAS_50, 2);
+        mockCedula(TipoNota.NOTAS_20, 2);
+        mockCedula(TipoNota.NOTAS_10, 2);
 
         try {
-            List<NotaDTO> retorno = service.distribuicaoNotas(80);
-            assertArrayEquals(notaDTO.toArray(), retorno.toArray());
+            List<CedulaDTO> retorno = service.buscarDistribuicaoDeCedulas(80);
+            assertArrayEquals(cedulaDTO.toArray(), retorno.toArray());
         } catch (Exception e) {
             fail("Não deve falhar!");
         }
@@ -149,23 +127,16 @@ public class SaqueServiceTest {
 
     @Test
     public void deveGerarExceptionQuandoEncontrarValorMenorQueDez(){
-        when(dispenserService.listarNotasEmEstoque())
+        when(dispenserService.buscarNotasEmEstoque())
                 .thenReturn(buildCedulasDispenser());
 
-        when(dispenserService.retornaQuantidadeDeNotasDoTipo(TipoNota.NOTAS_100))
-                .thenReturn(2);
-
-        when(dispenserService.retornaQuantidadeDeNotasDoTipo(TipoNota.NOTAS_50))
-                .thenReturn(2);
-
-        when(dispenserService.retornaQuantidadeDeNotasDoTipo(TipoNota.NOTAS_20))
-                .thenReturn(2);
-
-        when(dispenserService.retornaQuantidadeDeNotasDoTipo(TipoNota.NOTAS_10))
-                .thenReturn(2);
+        mockCedula(TipoNota.NOTAS_100, 2);
+        mockCedula(TipoNota.NOTAS_50, 2);
+        mockCedula(TipoNota.NOTAS_20, 2);
+        mockCedula(TipoNota.NOTAS_10, 2);
 
         try {
-            service.distribuicaoNotas(285);
+            service.buscarDistribuicaoDeCedulas(285);
             fail("Deve falhar!");
         } catch (Exception e) {
             assert(e.getMessage().equals("Não é permitido valor menor que 10 reais!"));
@@ -174,37 +145,29 @@ public class SaqueServiceTest {
 
     @Test
     public void deveRetornarDuasDeCinquentaENoveDeDezQuandoDemiasNotasZeradas(){
-        List<NotaDTO> notaDTO = new ArrayList<>();
-        notaDTO.add(buildNotaDTO(2, TipoNota.NOTAS_50));
-        notaDTO.add(buildNotaDTO(9, TipoNota.NOTAS_10));
-        when(dispenserService.listarNotasEmEstoque())
+        List<CedulaDTO> cedulaDTO = new ArrayList<>();
+        cedulaDTO.add(buildNotaDTO(2, TipoNota.NOTAS_50));
+        cedulaDTO.add(buildNotaDTO(9, TipoNota.NOTAS_10));
+        when(dispenserService.buscarNotasEmEstoque())
                 .thenReturn(buildCedulasDispenser());
 
-        when(dispenserService.retornaQuantidadeDeNotasDoTipo(TipoNota.NOTAS_100))
-                .thenReturn(0);
-
-        when(dispenserService.retornaQuantidadeDeNotasDoTipo(TipoNota.NOTAS_50))
-                .thenReturn(2);
-
-        when(dispenserService.retornaQuantidadeDeNotasDoTipo(TipoNota.NOTAS_20))
-                .thenReturn(0);
-
-        when(dispenserService.retornaQuantidadeDeNotasDoTipo(TipoNota.NOTAS_10))
-                .thenReturn(9);
-
+        mockCedula(TipoNota.NOTAS_100, 0);
+        mockCedula(TipoNota.NOTAS_50, 2);
+        mockCedula(TipoNota.NOTAS_20, 0);
+        mockCedula(TipoNota.NOTAS_10, 9);
         try {
-            List<NotaDTO> retorno = service.distribuicaoNotas(190);
-            assertArrayEquals(notaDTO.toArray(), retorno.toArray());
+            List<CedulaDTO> retorno = service.buscarDistribuicaoDeCedulas(190);
+            assertArrayEquals(cedulaDTO.toArray(), retorno.toArray());
         } catch (Exception e) {
             fail("Não deve falhar!");
         }
     }
 
-    private NotaDTO buildNotaDTO(Integer quantidade, TipoNota tipo) {
-        NotaDTO notaDTO = new NotaDTO();
-        notaDTO.setQuantidade(quantidade);
-        notaDTO.setTipoNota(tipo);
-        return notaDTO;
+    private CedulaDTO buildNotaDTO(Integer quantidade, TipoNota tipo) {
+        CedulaDTO cedulaDTO = new CedulaDTO();
+        cedulaDTO.setQuantidade(quantidade);
+        cedulaDTO.setTipoNota(tipo);
+        return cedulaDTO;
     }
 
     private List<Cedula> buildCedulasDispenser() {
@@ -214,5 +177,10 @@ public class SaqueServiceTest {
         notasDisponiveis.add(new Cedula(2, TipoNota.NOTAS_20));
         notasDisponiveis.add(new Cedula(5, TipoNota.NOTAS_10));
         return notasDisponiveis;
+    }
+
+    private void mockCedula(TipoNota tipoNota, Integer quantidade){
+        when(dispenserService.buscarCedulaDoTipo(tipoNota))
+                .thenReturn(java.util.Optional.of(new Cedula(quantidade, tipoNota)));
     }
 }

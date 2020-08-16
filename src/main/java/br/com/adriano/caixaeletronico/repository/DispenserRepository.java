@@ -19,7 +19,7 @@ public class DispenserRepository {
         notasDisponiveis.add(new Cedula(5, TipoNota.NOTAS_10));
     }
 
-    public List<Cedula> buscaNotasDispenser() {
+    public List<Cedula> buscarNotasDispenser() {
         return notasDisponiveis;
     }
 
