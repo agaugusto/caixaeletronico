@@ -1,20 +1,19 @@
-package br.com.adriano.caixaeletronico.service;
+package br.com.adriano.caixaeletronico.services;
 
-import br.com.adriano.caixaeletronico.controller.TipoNotas;
+import br.com.adriano.caixaeletronico.tipo.TipoNota;
 
 import java.util.Objects;
 
-public class Notas {
+public class Cedula {
     private Integer quantidadeDisponivel;
-    private TipoNotas nota;
+    private TipoNota nota;
 
-    public Notas(Integer quantidadeDisponivel, TipoNotas nota) {
+    public Cedula(Integer quantidadeDisponivel, TipoNota nota) {
         this.quantidadeDisponivel = quantidadeDisponivel;
         this.nota = nota;
     }
 
-
-    public void retirada(Integer quantidade) throws Exception {
+    public void retirarEstoque(Integer quantidade) throws Exception {
         if(quantidadeDisponivel >= quantidade){
             quantidadeDisponivel=quantidadeDisponivel-quantidade;
         }else {
@@ -22,21 +21,15 @@ public class Notas {
         }
     }
 
-    public void setQuantidadeDisponivel(Integer quantidadeDisponivel) {
-        this.quantidadeDisponivel = quantidadeDisponivel;
-    }
-
     public Integer getQuantidadeDisponivel() {
         return quantidadeDisponivel;
     }
-
-
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Notas notas = (Notas) o;
+        Cedula notas = (Cedula) o;
         return nota == notas.nota;
     }
 
@@ -45,7 +38,7 @@ public class Notas {
         return Objects.hash(nota);
     }
 
-    public TipoNotas getNota() {
+    public TipoNota getNota() {
         return nota;
     }
 }

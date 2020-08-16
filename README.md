@@ -1,5 +1,5 @@
 Essa API foi desenvolvida para atender o desafio do dojopuzzles.com sobre um caixa eletrônico.
-Segue as regras do dojo.
+Seguem abaixo as regras contempladas para o dojo.
 
 Desenvolva um programa que simule a entrega de notas quando um cliente efetuar um saque em um caixa eletrônico. Os requisitos 
 básicos são os seguintes:

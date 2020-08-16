@@ -1,7 +1,7 @@
 package br.com.adriano.caixaeletronico.controller;
 
-import br.com.adriano.caixaeletronico.dto.response.NotasDTO;
-import br.com.adriano.caixaeletronico.service.NotasService;
+import br.com.adriano.caixaeletronico.dto.NotaDTO;
+import br.com.adriano.caixaeletronico.services.SaqueService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,22 +9,22 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/saque")
+@RequestMapping("/saques")
 public class Saque {
 
-    private final NotasService notasService;
+    private final SaqueService saqueService;
 
-    public Saque(NotasService notasService) {
-        this.notasService = notasService;
+    public Saque(SaqueService saqueService) {
+        this.saqueService = saqueService;
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{valor}")
-    public List<NotasDTO> retornaQuantidadeDeNotas(@PathVariable("valor") Integer valor) {
+    public ResponseEntity<?> retornaQuantidadeDeNotas(@PathVariable("valor") Integer valor) {
         try {
-            return notasService.distribuicaoNotas(valor);
+            return new ResponseEntity<>(saqueService.distribuicaoNotas(valor),HttpStatus.OK);
         } catch (Exception e) {
-            return (List<NotasDTO>) ResponseEntity.badRequest().build();
+            throw new NumberFormatException("testando");
         }
 
 
