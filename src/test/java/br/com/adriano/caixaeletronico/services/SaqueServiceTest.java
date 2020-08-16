@@ -1,6 +1,7 @@
 package br.com.adriano.caixaeletronico.services;
 
 
+import br.com.adriano.caixaeletronico.model.Cedula;
 import br.com.adriano.caixaeletronico.tipo.TipoNota;
 import br.com.adriano.caixaeletronico.dto.CedulaDTO;
 import org.junit.Before;
@@ -40,7 +41,7 @@ public class SaqueServiceTest {
         mockCedula(TipoNota.NOTAS_10, 2);
 
         try {
-            List<CedulaDTO> retorno = service.buscarDistribuicaoDeCedulas(280);
+            List<CedulaDTO> retorno = service.sacarCedulas(280);
             assertArrayEquals(cedulaDTO.toArray(), retorno.toArray());
         } catch (Exception e) {
             fail("Não deve falhar!");
@@ -59,7 +60,7 @@ public class SaqueServiceTest {
         mockCedula(TipoNota.NOTAS_10, 2);
 
         try {
-            List<CedulaDTO> retorno = service.buscarDistribuicaoDeCedulas(110);
+            List<CedulaDTO> retorno = service.sacarCedulas(110);
             assertArrayEquals(cedulaDTO.toArray(), retorno.toArray());
         } catch (Exception e) {
             fail("Não deve falhar!");
@@ -78,7 +79,7 @@ public class SaqueServiceTest {
         mockCedula(TipoNota.NOTAS_20, 2);
 
         try {
-            List<CedulaDTO> retorno = service.buscarDistribuicaoDeCedulas(90);
+            List<CedulaDTO> retorno = service.sacarCedulas(90);
             assertArrayEquals(cedulaDTO.toArray(), retorno.toArray());
         } catch (Exception e) {
             fail("Não deve falhar!");
@@ -97,7 +98,7 @@ public class SaqueServiceTest {
         mockCedula(TipoNota.NOTAS_10, 2);
 
         try {
-            List<CedulaDTO> retorno = service.buscarDistribuicaoDeCedulas(30);
+            List<CedulaDTO> retorno = service.sacarCedulas(30);
             assertArrayEquals(cedulaDTO.toArray(), retorno.toArray());
         } catch (Exception e) {
             fail("Não deve falhar!");
@@ -118,7 +119,7 @@ public class SaqueServiceTest {
         mockCedula(TipoNota.NOTAS_10, 2);
 
         try {
-            List<CedulaDTO> retorno = service.buscarDistribuicaoDeCedulas(80);
+            List<CedulaDTO> retorno = service.sacarCedulas(80);
             assertArrayEquals(cedulaDTO.toArray(), retorno.toArray());
         } catch (Exception e) {
             fail("Não deve falhar!");
@@ -136,7 +137,7 @@ public class SaqueServiceTest {
         mockCedula(TipoNota.NOTAS_10, 2);
 
         try {
-            service.buscarDistribuicaoDeCedulas(285);
+            service.sacarCedulas(285);
             fail("Deve falhar!");
         } catch (Exception e) {
             assert(e.getMessage().equals("Não é permitido valor menor que 10 reais!"));
@@ -156,7 +157,7 @@ public class SaqueServiceTest {
         mockCedula(TipoNota.NOTAS_20, 0);
         mockCedula(TipoNota.NOTAS_10, 9);
         try {
-            List<CedulaDTO> retorno = service.buscarDistribuicaoDeCedulas(190);
+            List<CedulaDTO> retorno = service.sacarCedulas(190);
             assertArrayEquals(cedulaDTO.toArray(), retorno.toArray());
         } catch (Exception e) {
             fail("Não deve falhar!");

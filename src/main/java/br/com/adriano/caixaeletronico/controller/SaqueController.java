@@ -9,18 +9,18 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/saques")
-public class Saque {
+public class SaqueController {
 
     private final SaqueService saqueService;
 
-    public Saque(SaqueService saqueService) {
+    public SaqueController(SaqueService saqueService) {
         this.saqueService = saqueService;
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{valor}")
     public ResponseEntity<?> retornaQuantidadeDeNotas(@PathVariable("valor") Integer valor) throws ValorIndisponivelException, NumeroDeNotasIndisponivelException {
-        return new ResponseEntity<>(saqueService.buscarDistribuicaoDeCedulas(valor),HttpStatus.OK);
+        return new ResponseEntity<>(saqueService.sacarCedulas(valor), HttpStatus.OK);
     }
 
 }

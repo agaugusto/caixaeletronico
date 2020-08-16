@@ -9,13 +9,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @ControllerAdvice
 public class RestExceptionHandler {
     @ExceptionHandler(ValorIndisponivelException.class)
-    public ResponseEntity<?>handleValorIndisponivelException(ValorIndisponivelException exception){
-        ExceptionDetails eDatails = ExceptionDetails.Builder.newBuilder()
+    public ResponseEntity<?> handleValorIndisponivelException(ValorIndisponivelException exception) {
+        ExceptionDetails eDatails = ExceptionDetails.builder()
                 .timeStamp(new Date().getTime())
                 .status(HttpStatus.NOT_FOUND.value())
                 .title("Resource not found")
@@ -26,9 +28,9 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler(NumeroDeNotasIndisponivelException.class)
-    public ResponseEntity<?>handleNumeroDeNotasIndisponivelException(NumeroDeNotasIndisponivelException exception){
-        ExceptionDetails eDatails = ExceptionDetails.Builder.newBuilder()
-                .timeStamp(new Date().getTime())
+    public ResponseEntity<?> handleNumeroDeNotasIndisponivelException(NumeroDeNotasIndisponivelException exception) {
+        ExceptionDetails eDatails = ExceptionDetails.builder()
+                .timeStamp(Timestamp.valueOf(LocalDateTime.now()).getTime())
                 .status(HttpStatus.NOT_FOUND.value())
                 .title("Resource not found")
                 .detail(exception.getMessage())
@@ -38,8 +40,8 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler(CedulaIndisponivelException.class)
-    public ResponseEntity<?>handleCedulaIndisponivelException(CedulaIndisponivelException exception){
-        ExceptionDetails eDatails = ExceptionDetails.Builder.newBuilder()
+    public ResponseEntity<?> handleCedulaIndisponivelException(CedulaIndisponivelException exception) {
+        ExceptionDetails eDatails = ExceptionDetails.builder()
                 .timeStamp(new Date().getTime())
                 .status(HttpStatus.NOT_FOUND.value())
                 .title("Resource not found")

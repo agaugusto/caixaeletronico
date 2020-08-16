@@ -1,7 +1,7 @@
 package br.com.adriano.caixaeletronico.repository;
 
 import br.com.adriano.caixaeletronico.tipo.TipoNota;
-import br.com.adriano.caixaeletronico.services.Cedula;
+import br.com.adriano.caixaeletronico.model.Cedula;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -22,5 +22,4 @@ public class DispenserRepository {
     public List<Cedula> buscarNotasDispenser() {
         return notasDisponiveis;
     }
-
 }

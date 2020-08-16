@@ -2,6 +2,7 @@ package br.com.adriano.caixaeletronico.services;
 
 import br.com.adriano.caixaeletronico.error.CedulaIndisponivelException;
 import br.com.adriano.caixaeletronico.error.NumeroDeNotasIndisponivelException;
+import br.com.adriano.caixaeletronico.model.Cedula;
 import br.com.adriano.caixaeletronico.repository.DispenserRepository;
 import br.com.adriano.caixaeletronico.tipo.TipoNota;
 import org.junit.Before;
@@ -22,7 +23,7 @@ public class DispenserServiceTest {
 
     @Before
 
-    public void setup(){
+    public void setup() {
         dispenserRepository = mock(DispenserRepository.class);
         when(dispenserRepository.buscarNotasDispenser())
                 .thenReturn(buildCedulasDispenser());
@@ -30,7 +31,7 @@ public class DispenserServiceTest {
     }
 
     @Test
-    public void deveRetornarCedulasDoTipo100(){
+    public void deveRetornarCedulasDoTipo100() {
 
         Optional<Cedula> retorno = service.buscarCedulaDoTipo(TipoNota.NOTAS_100);
 
@@ -39,7 +40,7 @@ public class DispenserServiceTest {
     }
 
     @Test
-    public void deveRetornarCedulaVaziaQuandoNaoEncontrar(){
+    public void deveRetornarCedulaVaziaQuandoNaoEncontrar() {
 
         Optional<Cedula> retorno = service.buscarCedulaDoTipo(TipoNota.NOTAS_10);
 
@@ -48,7 +49,7 @@ public class DispenserServiceTest {
     }
 
     @Test
-    public void deveAtualizarRetiradaDeCedulasComSucesso(){
+    public void deveAtualizarRetiradaDeCedulasComSucesso() {
 
         try {
             service.atualizarRetiraDeCedulas(TipoNota.NOTAS_100, 3);
@@ -58,25 +59,25 @@ public class DispenserServiceTest {
     }
 
     @Test
-    public void naoDeveAtualizarRetiradaDeCedulasQuandoRetiradaMaiorQueDisponivel(){
+    public void naoDeveAtualizarRetiradaDeCedulasQuandoRetiradaMaiorQueDisponivel() {
 
         try {
             service.atualizarRetiraDeCedulas(TipoNota.NOTAS_100, 9);
         } catch (NumeroDeNotasIndisponivelException e) {
             assertEquals("Número de notas indisponível!", e.getMessage());
-        } catch (Exception e){
+        } catch (Exception e) {
             fail("Deve lançar NumeroDeNotasIndisponivelException!");
         }
     }
 
     @Test
-    public void naoDeveAtualizarRetiradaDeCedulasQuandoCedulaNaoEncontrada(){
+    public void naoDeveAtualizarRetiradaDeCedulasQuandoCedulaNaoEncontrada() {
 
         try {
             service.atualizarRetiraDeCedulas(TipoNota.NOTAS_10, 9);
         } catch (CedulaIndisponivelException e) {
             assertEquals("Cedula não encontrada!", e.getMessage());
-        } catch (Exception e){
+        } catch (Exception e) {
             fail("Deve lançar CedulaIndisponivelException!");
         }
     }
