@@ -1,6 +1,7 @@
 package br.com.adriano.caixaeletronico.services;
 
 
+import br.com.adriano.caixaeletronico.error.ValorIndisponivelException;
 import br.com.adriano.caixaeletronico.model.Cedula;
 import br.com.adriano.caixaeletronico.tipo.TipoNota;
 import br.com.adriano.caixaeletronico.dto.CedulaDTO;
@@ -10,8 +11,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class SaqueServiceTest {
@@ -20,13 +20,13 @@ public class SaqueServiceTest {
     DispenserService dispenserService;
 
     @Before
-    public void setup(){
+    public void setup() {
         dispenserService = mock(DispenserService.class);
         service = new SaqueService(dispenserService);
     }
 
     @Test
-    public void deveRetornarUmaNotaDeDezUmaDeVinteUmaDeCinquentaEDuasDeCem(){
+    public void deveRetornarUmaNotaDeDezUmaDeVinteUmaDeCinquentaEDuasDeCemComSucesso() {
         List<CedulaDTO> cedulaDTO = new ArrayList<>();
         cedulaDTO.add(buildNotaDTO(2, TipoNota.NOTAS_100));
         cedulaDTO.add(buildNotaDTO(1, TipoNota.NOTAS_50));
@@ -44,12 +44,12 @@ public class SaqueServiceTest {
             List<CedulaDTO> retorno = service.sacarCedulas(280);
             assertArrayEquals(cedulaDTO.toArray(), retorno.toArray());
         } catch (Exception e) {
-            fail("Não deve falhar!");
+            fail("Deve executar com sucesso!");
         }
     }
 
     @Test
-    public void deveRetornarUmaNotaDeDezEUmaDeCinquenta(){
+    public void deveRetornarUmaNotaDeDezEUmaDeCinquentaComSucesso() {
         List<CedulaDTO> cedulaDTO = new ArrayList<>();
         cedulaDTO.add(buildNotaDTO(1, TipoNota.NOTAS_100));
         cedulaDTO.add(buildNotaDTO(1, TipoNota.NOTAS_10));
@@ -63,12 +63,12 @@ public class SaqueServiceTest {
             List<CedulaDTO> retorno = service.sacarCedulas(110);
             assertArrayEquals(cedulaDTO.toArray(), retorno.toArray());
         } catch (Exception e) {
-            fail("Não deve falhar!");
+            fail("Deve executar com sucesso!");
         }
     }
 
     @Test
-    public void deveRetornarDuasDeVinteEUmaDeCinquenta(){
+    public void deveRetornarDuasDeVinteEUmaDeCinquentaComSucesso() {
         List<CedulaDTO> cedulaDTO = new ArrayList<>();
         cedulaDTO.add(buildNotaDTO(1, TipoNota.NOTAS_50));
         cedulaDTO.add(buildNotaDTO(2, TipoNota.NOTAS_20));
@@ -82,12 +82,12 @@ public class SaqueServiceTest {
             List<CedulaDTO> retorno = service.sacarCedulas(90);
             assertArrayEquals(cedulaDTO.toArray(), retorno.toArray());
         } catch (Exception e) {
-            fail("Não deve falhar!");
+            fail("Deve executar com sucesso!");
         }
     }
 
     @Test
-    public void deveRetornarUmaDeVinteEUmaDeDez(){
+    public void deveRetornarUmaDeVinteEUmaDeDezComSucesso() {
         List<CedulaDTO> cedulaDTO = new ArrayList<>();
         cedulaDTO.add(buildNotaDTO(1, TipoNota.NOTAS_20));
         cedulaDTO.add(buildNotaDTO(1, TipoNota.NOTAS_10));
@@ -101,12 +101,12 @@ public class SaqueServiceTest {
             List<CedulaDTO> retorno = service.sacarCedulas(30);
             assertArrayEquals(cedulaDTO.toArray(), retorno.toArray());
         } catch (Exception e) {
-            fail("Não deve falhar!");
+            fail("Deve executar com sucesso!");
         }
     }
 
     @Test
-    public void deveRetornarUmaDeCinquentaUmaDeVinteEUmaDeDez(){
+    public void deveRetornarUmaDeCinquentaUmaDeVinteEUmaDeDezComSucesso() {
         List<CedulaDTO> cedulaDTO = new ArrayList<>();
         cedulaDTO.add(buildNotaDTO(1, TipoNota.NOTAS_50));
         cedulaDTO.add(buildNotaDTO(1, TipoNota.NOTAS_20));
@@ -122,12 +122,12 @@ public class SaqueServiceTest {
             List<CedulaDTO> retorno = service.sacarCedulas(80);
             assertArrayEquals(cedulaDTO.toArray(), retorno.toArray());
         } catch (Exception e) {
-            fail("Não deve falhar!");
+            fail("Deve executar com sucesso!");
         }
     }
 
     @Test
-    public void deveGerarExceptionQuandoEncontrarValorMenorQueDez(){
+    public void deveGerarExceptionQuandoEncontrarValorMenorQueDez() {
         when(dispenserService.buscarNotasEmEstoque())
                 .thenReturn(buildCedulasDispenser());
 
@@ -138,14 +138,16 @@ public class SaqueServiceTest {
 
         try {
             service.sacarCedulas(285);
-            fail("Deve falhar!");
+            fail("Deve retornar ValorIndisponivelException!");
+        } catch (ValorIndisponivelException e) {
+            assertEquals("Não é permitido Cedulas menor que 10!", e.getMessage());
         } catch (Exception e) {
-            assert(e.getMessage().equals("Não é permitido valor menor que 10 reais!"));
+            fail("Deve retornar ValorIndisponivelException!");
         }
     }
 
     @Test
-    public void deveRetornarDuasDeCinquentaENoveDeDezQuandoDemiasNotasZeradas(){
+    public void deveRetornarDuasDeCinquentaENoveDeDezQuandoDemiasNotasZeradasComSucesso() {
         List<CedulaDTO> cedulaDTO = new ArrayList<>();
         cedulaDTO.add(buildNotaDTO(2, TipoNota.NOTAS_50));
         cedulaDTO.add(buildNotaDTO(9, TipoNota.NOTAS_10));
@@ -160,7 +162,7 @@ public class SaqueServiceTest {
             List<CedulaDTO> retorno = service.sacarCedulas(190);
             assertArrayEquals(cedulaDTO.toArray(), retorno.toArray());
         } catch (Exception e) {
-            fail("Não deve falhar!");
+            fail("Deve executar com sucesso!");
         }
     }
 
@@ -180,7 +182,7 @@ public class SaqueServiceTest {
         return notasDisponiveis;
     }
 
-    private void mockCedula(TipoNota tipoNota, Integer quantidade){
+    private void mockCedula(TipoNota tipoNota, Integer quantidade) {
         when(dispenserService.buscarCedulaDoTipo(tipoNota))
                 .thenReturn(java.util.Optional.of(new Cedula(quantidade, tipoNota)));
     }

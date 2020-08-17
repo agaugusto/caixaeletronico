@@ -44,7 +44,7 @@ public class SaqueService {
         if (valorRestante >= 10) {
             throw new NumeroDeNotasIndisponivelException("Valor solicitado indisponível!");
         } else if (valorRestante != 0) {
-            throw new ValorIndisponivelException("Não é permitido valor menor que 10 reais!");
+            throw new ValorIndisponivelException("Não é permitido Cedulas menor que 10!");
         }
         return listaCedulas;
     }

@@ -31,7 +31,7 @@ public class DispenserServiceTest {
     }
 
     @Test
-    public void deveRetornarCedulasDoTipo100() {
+    public void deveRetornarCedulasDoTipo100ComSucesso() {
 
         Optional<Cedula> retorno = service.buscarCedulaDoTipo(TipoNota.NOTAS_100);
 
@@ -54,12 +54,12 @@ public class DispenserServiceTest {
         try {
             service.atualizarRetiraDeCedulas(TipoNota.NOTAS_100, 3);
         } catch (Exception e) {
-            fail("Não deve falhar!");
+            fail("Deve executar com sucesso!");
         }
     }
 
     @Test
-    public void naoDeveAtualizarRetiradaDeCedulasQuandoRetiradaMaiorQueDisponivel() {
+    public void deveLnacarExceptionAoAtualizarRetiradaDeCedulasQuandoRetiradaMaiorQueDisponivel() {
 
         try {
             service.atualizarRetiraDeCedulas(TipoNota.NOTAS_100, 9);
@@ -71,7 +71,7 @@ public class DispenserServiceTest {
     }
 
     @Test
-    public void naoDeveAtualizarRetiradaDeCedulasQuandoCedulaNaoEncontrada() {
+    public void deveLancarExceptionAoAtualizarRetiradaDeCedulasQuandoCedulaNaoEncontrada() {
 
         try {
             service.atualizarRetiraDeCedulas(TipoNota.NOTAS_10, 9);
@@ -83,7 +83,7 @@ public class DispenserServiceTest {
     }
 
     @Test
-    public void deveBuscarNotasDoDispenser() {
+    public void deveBuscarNotasDoDispenserComSucesso() {
 
         List<Cedula> retorno = service.buscarNotasEmEstoque();
         assertEquals(buildCedulasDispenser(), retorno);

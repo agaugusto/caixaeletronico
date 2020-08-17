@@ -18,7 +18,7 @@ public class SaqueController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/{valor}")
+    @GetMapping("/{valor}")
     public ResponseEntity<?> retornaQuantidadeDeNotas(@PathVariable("valor") Integer valor) throws ValorIndisponivelException, NumeroDeNotasIndisponivelException {
         return new ResponseEntity<>(saqueService.sacarCedulas(valor), HttpStatus.OK);
     }
