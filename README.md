@@ -13,7 +13,7 @@ Notas disponíveis de R$ 100,00; R$ 50,00; R$ 20,00 e R$ 10,00
 Instruções de uso.
 
 Executar o projeto caixa eletrônico na sua IDE.
-Configurar Postman ou qualquer outra ferramenta de RESTFul para fazer o put no endereço 
+Configurar Postman ou qualquer outra ferramenta de RESTFul para fazer o GET no endereço 
 localhost:8080/saque/:valor
 Configurar o valor a ser sacado, só é permitido valores inteiros.
 Ao executar, se estiver notas disponível será retornado um json informando a nota e quantidade.
