@@ -1,4 +1,4 @@
-package br.com.adriano.caixaeletronico.error;
+package br.com.adriano.atm.error;
 
 import lombok.Builder;
 import lombok.Getter;

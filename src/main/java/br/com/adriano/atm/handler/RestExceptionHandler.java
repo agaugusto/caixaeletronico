@@ -1,9 +1,9 @@
-package br.com.adriano.caixaeletronico.handler;
+package br.com.adriano.atm.handler;
 
-import br.com.adriano.caixaeletronico.error.CedulaIndisponivelException;
-import br.com.adriano.caixaeletronico.error.NumeroDeNotasIndisponivelException;
-import br.com.adriano.caixaeletronico.error.ExceptionDetails;
-import br.com.adriano.caixaeletronico.error.ValorIndisponivelException;
+import br.com.adriano.atm.error.BallotUnavailableException;
+import br.com.adriano.atm.error.NumberOfCedulasUnavailableException;
+import br.com.adriano.atm.error.ExceptionDetails;
+import br.com.adriano.atm.error.WithdrawalAmountUnavailableException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -15,8 +15,8 @@ import java.util.Date;
 
 @ControllerAdvice
 public class RestExceptionHandler {
-    @ExceptionHandler(ValorIndisponivelException.class)
-    public ResponseEntity<?> handleValorIndisponivelException(ValorIndisponivelException exception) {
+    @ExceptionHandler(WithdrawalAmountUnavailableException.class)
+    public ResponseEntity<?> handleValorIndisponivelException(WithdrawalAmountUnavailableException exception) {
         ExceptionDetails eDatails = ExceptionDetails.builder()
                 .timeStamp(new Date().getTime())
                 .status(HttpStatus.NOT_FOUND.value())
@@ -27,8 +27,8 @@ public class RestExceptionHandler {
         return new ResponseEntity<>(eDatails, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(NumeroDeNotasIndisponivelException.class)
-    public ResponseEntity<?> handleNumeroDeNotasIndisponivelException(NumeroDeNotasIndisponivelException exception) {
+    @ExceptionHandler(NumberOfCedulasUnavailableException.class)
+    public ResponseEntity<?> handleNumeroDeNotasIndisponivelException(NumberOfCedulasUnavailableException exception) {
         ExceptionDetails eDatails = ExceptionDetails.builder()
                 .timeStamp(Timestamp.valueOf(LocalDateTime.now()).getTime())
                 .status(HttpStatus.NOT_FOUND.value())
@@ -39,8 +39,8 @@ public class RestExceptionHandler {
         return new ResponseEntity<>(eDatails, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(CedulaIndisponivelException.class)
-    public ResponseEntity<?> handleCedulaIndisponivelException(CedulaIndisponivelException exception) {
+    @ExceptionHandler(BallotUnavailableException.class)
+    public ResponseEntity<?> handleCedulaIndisponivelException(BallotUnavailableException exception) {
         ExceptionDetails eDatails = ExceptionDetails.builder()
                 .timeStamp(new Date().getTime())
                 .status(HttpStatus.NOT_FOUND.value())
