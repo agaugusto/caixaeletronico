@@ -1,10 +1,10 @@
-package br.com.adriano.atm.services;
+package br.com.adriano.caixaeletronico.services;
 
-import br.com.adriano.atm.error.BallotUnavailableException;
-import br.com.adriano.atm.error.NumberOfCedulasUnavailableException;
-import br.com.adriano.atm.model.MoneyBill;
-import br.com.adriano.atm.repository.DispenserRepository;
-import br.com.adriano.atm.tipo.MoneyBillsType;
+import br.com.adriano.caixaeletronico.error.CedulaIndisponivelException;
+import br.com.adriano.caixaeletronico.error.NumeroDeNotasIndisponivelException;
+import br.com.adriano.caixaeletronico.model.Cedula;
+import br.com.adriano.caixaeletronico.repository.DispenserRepository;
+import br.com.adriano.caixaeletronico.tipo.TipoNota;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,9 +15,9 @@ import java.util.Optional;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class CashDispenserServiceTest {
+public class DispenserServiceTest {
 
-    private CashDispenserService service;
+    private DispenserService service;
     DispenserRepository dispenserRepository;
 
 
@@ -25,24 +25,24 @@ public class CashDispenserServiceTest {
 
     public void setup() {
         dispenserRepository = mock(DispenserRepository.class);
-        when(dispenserRepository.loadCashDispenser())
+        when(dispenserRepository.buscarNotasDispenser())
                 .thenReturn(buildCedulasDispenser());
-        service = new CashDispenserService(dispenserRepository);
+        service = new DispenserService(dispenserRepository);
     }
 
     @Test
     public void deveRetornarCedulasDoTipo100ComSucesso() {
 
-        Optional<MoneyBill> retorno = service.findMoneyBillsType(MoneyBillsType.NOTAS_100);
+        Optional<Cedula> retorno = service.buscarCedulaDoTipo(TipoNota.NOTAS_100);
 
-        assertEquals(Optional.of(5), Optional.ofNullable(retorno.get().getQuantityAvailable()));
+        assertEquals(Optional.of(5), Optional.ofNullable(retorno.get().getQuantidadeDisponivel()));
 
     }
 
     @Test
     public void deveRetornarCedulaVaziaQuandoNaoEncontrar() {
 
-        Optional<MoneyBill> retorno = service.findMoneyBillsType(MoneyBillsType.NOTAS_10);
+        Optional<Cedula> retorno = service.buscarCedulaDoTipo(TipoNota.NOTAS_10);
 
         assertFalse(retorno.isPresent());
 
@@ -52,7 +52,7 @@ public class CashDispenserServiceTest {
     public void deveAtualizarRetiradaDeCedulasComSucesso() {
 
         try {
-            service.updateWithdrawMoney(MoneyBillsType.NOTAS_100, 3);
+            service.atualizarRetiraDeCedulas(TipoNota.NOTAS_100, 3);
         } catch (Exception e) {
             fail("Deve executar com sucesso!");
         }
@@ -62,8 +62,8 @@ public class CashDispenserServiceTest {
     public void deveLnacarExceptionAoAtualizarRetiradaDeCedulasQuandoRetiradaMaiorQueDisponivel() {
 
         try {
-            service.updateWithdrawMoney(MoneyBillsType.NOTAS_100, 9);
-        } catch (NumberOfCedulasUnavailableException e) {
+            service.atualizarRetiraDeCedulas(TipoNota.NOTAS_100, 9);
+        } catch (NumeroDeNotasIndisponivelException e) {
             assertEquals("Número de notas indisponível!", e.getMessage());
         } catch (Exception e) {
             fail("Deve lançar NumeroDeNotasIndisponivelException!");
@@ -74,8 +74,8 @@ public class CashDispenserServiceTest {
     public void deveLancarExceptionAoAtualizarRetiradaDeCedulasQuandoCedulaNaoEncontrada() {
 
         try {
-            service.updateWithdrawMoney(MoneyBillsType.NOTAS_10, 9);
-        } catch (BallotUnavailableException e) {
+            service.atualizarRetiraDeCedulas(TipoNota.NOTAS_10, 9);
+        } catch (CedulaIndisponivelException e) {
             assertEquals("Cedula não encontrada!", e.getMessage());
         } catch (Exception e) {
             fail("Deve lançar CedulaIndisponivelException!");
@@ -85,15 +85,15 @@ public class CashDispenserServiceTest {
     @Test
     public void deveBuscarNotasDoDispenserComSucesso() {
 
-        List<MoneyBill> retorno = service.findCashDispenser();
+        List<Cedula> retorno = service.buscarNotasEmEstoque();
         assertEquals(buildCedulasDispenser(), retorno);
     }
 
-    private List<MoneyBill> buildCedulasDispenser() {
-        List<MoneyBill> notasDisponiveis = new ArrayList<>();
-        notasDisponiveis.add(new MoneyBill(5, MoneyBillsType.NOTAS_100));
-        notasDisponiveis.add(new MoneyBill(7, MoneyBillsType.NOTAS_50));
-        notasDisponiveis.add(new MoneyBill(2, MoneyBillsType.NOTAS_20));
+    private List<Cedula> buildCedulasDispenser() {
+        List<Cedula> notasDisponiveis = new ArrayList<>();
+        notasDisponiveis.add(new Cedula(5, TipoNota.NOTAS_100));
+        notasDisponiveis.add(new Cedula(7, TipoNota.NOTAS_50));
+        notasDisponiveis.add(new Cedula(2, TipoNota.NOTAS_20));
 
         return notasDisponiveis;
     }

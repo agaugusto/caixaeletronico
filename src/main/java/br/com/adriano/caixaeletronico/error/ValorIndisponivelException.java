@@ -1,11 +1,11 @@
-package br.com.adriano.atm.error;
+package br.com.adriano.caixaeletronico.error;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class NumberOfCedulasUnavailableException extends Exception {
-    public NumberOfCedulasUnavailableException(String message) {
+public class ValorIndisponivelException extends Exception {
+    public ValorIndisponivelException(String message) {
         super(message);
     }
 }

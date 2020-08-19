@@ -1,11 +1,11 @@
-package br.com.adriano.atm.error;
+package br.com.adriano.caixaeletronico.error;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class WithdrawalAmountUnavailableException extends Exception {
-    public WithdrawalAmountUnavailableException(String message) {
+public class CedulaIndisponivelException extends Exception {
+    public CedulaIndisponivelException(String message) {
         super(message);
     }
 }

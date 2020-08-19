@@ -1,11 +1,11 @@
-package br.com.adriano.atm.error;
+package br.com.adriano.caixaeletronico.error;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class BallotUnavailableException extends Exception {
-    public BallotUnavailableException(String message) {
+public class NumeroDeNotasIndisponivelException extends Exception {
+    public NumeroDeNotasIndisponivelException(String message) {
         super(message);
     }
 }

@@ -1,26 +1,26 @@
-This API was developed to meet the challenge of dojopuzzles.com about an ATM.
-Below are the rules for the dojo.
+Essa API foi desenvolvida para atender o desafio do dojopuzzles.com sobre um caixa eletrônico.
+Seguem abaixo as regras contempladas para o dojo.
 
-Develop a program that simulates the delivery of money when a customer withdraws at an ATM. The requirements
-basic are as follows:
+Desenvolva um programa que simule a entrega de notas quando um cliente efetuar um saque em um caixa eletrônico. Os requisitos 
+básicos são os seguintes:
 
-Deliver the smallest number of cash notes;
-It is possible to withdraw the requested amount with the available cash notes;
-Infinite customer balance;
-Infinite banknote quantity (you can place a finite amount of banknote to increase the difficulty of the problem);
-Available cash note of R$ 100.00; R$ 50.00; R$ 20.00 and R$ 10.00
+Entregar o menor número de notas;
+É possível sacar o valor solicitado com as notas disponíveis;
+Saldo do cliente infinito;
+Quantidade de notas infinito (pode-se colocar um valor finito de cédulas para aumentar a dificuldade do problema);
+Notas disponíveis de R$ 100,00; R$ 50,00; R$ 20,00 e R$ 10,00
 
-Instructions for use.
+Instruções de uso.
 
-Run the ATM project in your IDE.
-Configure Postman or any other RESTFul tool to GET at the address
-localhost:8080/withdraw/:value
-Inform the amount to be withdrawn, only whole amounts are allowed.
-When executing, if money is available, a Json will be returned informing the note and quantity.
-If you have no more money, an exception will be returned.
+Executar o projeto caixa eletrônico na sua IDE.
+Configurar Postman ou qualquer outra ferramenta de RESTFul para fazer o GET no endereço 
+localhost:8080/saque/:valor
+Configurar o valor a ser sacado, só é permitido valores inteiros.
+Ao executar, se estiver notas disponível será retornado um json informando a nota e quantidade.
+Caso não tenha mais nota, será retornado uma exception.
 
-Initial amount of money in the dispenser.
-R$ 100.00 - 5
-R$ 50.00 - 7
-R$ 20.00 - 2
-R$ 10.00 - 5
+Quantidade inicial de notas no dispenser.
+R$ 100,00 - 5
+R$  50,00 - 7
+R$  20,00 - 2
+R$  10,00 - 5

@@ -1,13 +1,13 @@
-package br.com.adriano.atm;
+package br.com.adriano.caixaeletronico;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AtmApplication {
+public class CaixaeletronicoApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AtmApplication.class, args);
+		SpringApplication.run(CaixaeletronicoApplication.class, args);
 	}
 
 }
